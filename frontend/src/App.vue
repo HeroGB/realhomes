@@ -1,10 +1,30 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <div>
+    <h1>{{ message }}</h1>
+  </div>
 </template>
+
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      message: "",
+    };
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8000/api/hello/")
+      .then((response) => {
+        this.message = response.data.message;
+      })
+      .catch((error) => {
+        console.error("There was an error fetching data:", error);
+      });
+  },
+};
+</script>
 
 <style>
 #app {
