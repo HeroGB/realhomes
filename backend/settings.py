@@ -46,6 +46,8 @@ INSTALLED_APPS = [
 
     # CORS headers to handle cross-origin requests from the frontend
     'corsheaders',
+
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +66,12 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 
 TEMPLATES = [
     {
