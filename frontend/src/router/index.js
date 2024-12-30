@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import RegisterPage from "@/components/RegisterPage.vue";
+import Login from "@/components/Login.vue";
 
 const routes = [
   {
@@ -15,6 +17,16 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/register",
+    name: "RegisterPage", // Added name for navigation reference
+    component: RegisterPage,
+  },
+  {
+    path: "/login",
+    name: "Login", // Added name for navigation reference
+    component: Login,
   },
 ];
 
