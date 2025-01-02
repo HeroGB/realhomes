@@ -9,18 +9,19 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
 from pathlib import Path
+import os
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jxnad7o$lm1hoo^lu+hzu94%rq0z#clww#jhr-d&xm9rstmrwd'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key-for-development')
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,29 +39,30 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Django REST Framework to build APIs
-    'rest_framework',
-
-    # Your custom app for property listings
-    'properties',  # This is your 'properties' app
-
-    # CORS headers to handle cross-origin requests from the frontend
-    'corsheaders',
-
+    # Third-party apps
+    'rest_framework',  # Django REST Framework to build APIs
     'rest_framework_simplejwt',
+    'corsheaders', # CORS headers to handle cross-origin requests from the frontend
+
+    # Custom apps
+    'properties',  # This is your 'properties' app
+    'users',  # This is your 'users' app
+    #'django_extensions',
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
+#CORS_ALLOWED_ORIGINS = os.getenv('DJANGO_CORS_ALLOWED_ORIGINS', '').split(',')
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",  # Frontend URL
 ]
@@ -71,6 +73,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+}
+
+AUTH_USER_MODEL = 'users.CustomUser'  # 'users' is the app name, and 'CustomUser' is the model name
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 TEMPLATES = [
@@ -138,6 +148,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

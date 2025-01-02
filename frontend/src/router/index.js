@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import RegisterPage from "@/components/RegisterPage.vue";
+import RegisterForm from "@/components/RegisterForm.vue";
 import Login from "@/components/Login.vue";
 
 const routes = [
@@ -20,8 +20,8 @@ const routes = [
   },
   {
     path: "/register",
-    name: "RegisterPage", // Added name for navigation reference
-    component: RegisterPage,
+    name: "Register", // Added name for navigation reference
+    component: RegisterForm,
   },
   {
     path: "/login",

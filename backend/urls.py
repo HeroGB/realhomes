@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-#from properties.views import hello_world
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('properties.urls')),
+    path('admin/', admin.site.urls),  # Admin panel
+    path('users/', include('users.urls', namespace='users')),  # Users API
+    path('properties/', include('properties.urls', namespace='properties')),  # Properties API
 ]
+

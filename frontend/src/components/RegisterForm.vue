@@ -24,7 +24,7 @@
 import axios from "axios";
 
 export default {
-  name: "RegisterPage",
+  name: "RegisterForm",
   data() {
     return {
       username: "",
