@@ -1,35 +1,47 @@
 <template>
   <div id="app">
-    <!-- Add navigation if necessary -->
     <nav>
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
+      <router-link v-if="!isAuthenticated" to="/login">Login</router-link>
+      <router-link v-if="!isAuthenticated" to="/register">Register</router-link>
+      <router-link v-if="isAuthenticated" to="/dashboard"
+        >Dashboard</router-link
+      >
+      <a v-if="isAuthenticated" href="#" @click.prevent="logout">Logout</a>
     </nav>
-
-    <!-- The router-view is where the dynamic components will render -->
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   data() {
     return {
-      message: "",
+      isAuthenticated: false,
     };
   },
-  mounted() {
-    // Optional: Fetch data from the backend, if needed for initial load
-    axios
-      .get("http://127.0.0.1:8000/api/hello/")
-      .then((response) => {
-        this.message = response.data.message;
-      })
-      .catch((error) => {
-        console.error("There was an error fetching data:", error);
-      });
+  methods: {
+    checkAuth() {
+      // Check if tokens are present in localStorage
+      this.isAuthenticated =
+        !!localStorage.getItem("access_token") &&
+        !!localStorage.getItem("refresh_token");
+    },
+    logout() {
+      // Clear tokens and redirect to login
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      this.isAuthenticated = false;
+      this.$router.push("/login");
+    },
+  },
+  created() {
+    this.checkAuth();
+  },
+  watch: {
+    // Watch for route changes to re-check auth state
+    $route() {
+      this.checkAuth();
+    },
   },
 };
 </script>
@@ -51,9 +63,14 @@ nav a {
   font-weight: bold;
   color: #2c3e50;
   margin: 0 10px;
+  text-decoration: none;
 }
 
 nav a.router-link-exact-active {
+  color: #42b983;
+}
+
+nav a:hover {
   color: #42b983;
 }
 </style>

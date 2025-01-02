@@ -16,8 +16,11 @@
         required
         class="input-field"
       />
-      <button type="submit" class="btn-primary">Login</button>
+      <button type="submit" class="btn-primary">
+        {{ loading ? "Logging in..." : "Login" }}
+      </button>
     </form>
+    <p v-if="errorMessage" class="error-text">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -30,20 +33,28 @@ export default {
     return {
       username: "",
       password: "",
+      loading: false,
+      errorMessage: "",
     };
   },
   methods: {
     async loginUser() {
       try {
-        const response = await axios.post("http://127.0.0.1:8000/api/login/", {
-          username: this.username,
-          password: this.password,
-        });
+        const response = await axios.post(
+          "http://127.0.0.1:8000/users/auth/login/",
+          {
+            username: this.username,
+            password: this.password,
+          }
+        );
         localStorage.setItem("access_token", response.data.access);
         localStorage.setItem("refresh_token", response.data.refresh);
         this.$router.push("/dashboard"); // Redirect after login
       } catch (error) {
-        alert("Error: " + error.response.data.message);
+        this.errorMessage =
+          error.response?.data?.message || "An error occurred during login.";
+      } finally {
+        this.loading = false;
       }
     },
   },
