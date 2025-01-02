@@ -1,0 +1,29 @@
+Modularised using best practices
+
+    Summary of Completed Phase:
+    Custom User Model:
+
+    A CustomUser model with a phone_number field was created, ensuring extensibility for additional user attributes.
+    Users App:
+
+    A dedicated users app was set up to handle user management and authentication.
+    Appropriate serializers (CustomUserSerializer and LoginSerializer) were implemented.
+    Views were updated to handle registration, login, and JWT authentication using AuthViewSet.
+    Modular URLs:
+
+    users/urls.py and backend/urls.py were configured to route all user-related endpoints through the users app.
+    Best Practices Applied:
+
+    Used ViewSets for RESTful design.
+    Leveraged Django's group system for role management.
+    Centralized user-related logic in the users app for maintainability.
+    Verified Routes:
+
+    All configured routes were checked using python manage.py show_urls.
+    Error Fixes:
+
+    Addressed issues like namespace errors, import errors, and endpoint misconfigurations.
+    Ensured unique email validation.
+    Documentation:
+
+    A comprehensive document was created detailing the changes made for future reference.
