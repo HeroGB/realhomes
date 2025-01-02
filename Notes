@@ -1,0 +1,55 @@
+Updates for the Login Component:
+
+1. Update API Endpoint:
+   The login endpoint is now /users/auth/login/ based on your modularized setup.
+
+2. Handle Error Responses Gracefully:
+   Add specific error-handling logic to display meaningful error messages.
+
+3. Store Tokens Securely:
+   While localStorage is acceptable for a quick start, consider implementing secure cookies in production for better security.
+
+4. Best Practices:
+   Add a loading state to indicate the login process.
+   Validate input fields.
+
+Updates for the RegisterForm Component:
+
+1. Update API Endpoint:
+   The registration endpoint is now /users/auth/register/.
+
+2. Handle Error Responses Gracefully:
+   Display specific error messages for validation or server issues.
+
+3. Best Practices:
+   Add form validation (e.g., password strength).
+   Indicate a loading state during registration.
+   Normalize field names and use scoped styles.
+
+Suggested Updates: App.vue
+
+1. Use Vue Router's router-link:
+   Replace the plain <a> tags with <router-link> for seamless navigation.
+
+2. Dynamic Navigation:
+   Show links based on the user's authentication state (e.g., Login/Register for unauthenticated users and Logout for authenticated users).
+
+3. Global Authentication State:
+   Check if the user is authenticated using localStorage.
+
+4. Handle Logout:
+   Clear tokens from localStorage and redirect to the login page.
+
+Suggested Updates: router/index.js
+
+1. Protected Routes:
+   Add route guards to ensure certain routes (e.g., /dashboard) are only accessible to authenticated users.
+
+2. Fallback Route:
+   Include a 404 fallback route for unmatched paths.
+
+3. Dynamic Navigation:
+   Use route meta fields to define route-specific behavior (e.g., requiresAuth).
+
+4. Organize Routes:
+   Group related routes together (e.g., auth-related routes).
